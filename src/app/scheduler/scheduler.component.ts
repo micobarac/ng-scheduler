@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ViewEncapsulation, OnDestroy } from '@angular/core';
 import 'dhtmlx-scheduler';
 import 'dhtmlx-scheduler/codebase/ext/dhtmlxscheduler_year_view.js';
 import 'dhtmlx-scheduler/codebase/ext/dhtmlxscheduler_limit.js';
@@ -14,7 +14,7 @@ declare let scheduler: any;
   providers: [EventService],
   encapsulation: ViewEncapsulation.None
 })
-export class SchedulerComponent implements OnInit {
+export class SchedulerComponent implements OnInit, OnDestroy {
   readonly types = [
     { key: null, label: 'Select event type' },
     { key: 1, label: 'Rest' },
@@ -26,7 +26,7 @@ export class SchedulerComponent implements OnInit {
   constructor(private eventService: EventService) {}
 
   @ViewChild('scheduler')
-  schedulerContainer: ElementRef;
+  schedulerRef: ElementRef;
 
   ngOnInit() {
     scheduler.skin = 'material';
@@ -46,7 +46,7 @@ export class SchedulerComponent implements OnInit {
       return event.type ? 'event_' + this.getLabel(+event.type) : '';
     };
 
-    scheduler.init(this.schedulerContainer.nativeElement, new Date(), 'year');
+    scheduler.init(this.schedulerRef.nativeElement, new Date(), 'month');
 
     this.eventService.get().subscribe(data => {
       scheduler.parse(data, 'json');
@@ -89,5 +89,9 @@ export class SchedulerComponent implements OnInit {
 
   addEvent() {
     scheduler.addEventNow();
+  }
+
+  ngOnDestroy(): void {
+    scheduler.clearAll();
   }
 }
