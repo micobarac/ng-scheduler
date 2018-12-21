@@ -5,25 +5,27 @@ import { catchError } from 'rxjs/operators';
 import { Event } from '../models/event';
 import { handleError } from './service-helper';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EventService {
-  private eventUrl = 'api/events';
+  private url = 'api/events';
 
   constructor(private http: HttpClient) {}
 
   get(): Observable<Event[]> {
-    return this.http.get<Event[]>(this.eventUrl).pipe(catchError(handleError));
+    return this.http.get<Event[]>(this.url).pipe(catchError(handleError));
   }
 
   insert(event: Event): Observable<Event> {
-    return this.http.post<Event>(this.eventUrl, event).pipe(catchError(handleError));
+    return this.http.post<Event>(this.url, event).pipe(catchError(handleError));
   }
 
   update(event: Event): Observable<void> {
-    return this.http.put<void>(`${this.eventUrl}/${event.id}`, event).pipe(catchError(handleError));
+    return this.http.put<void>(`${this.url}/${event.id}`, event).pipe(catchError(handleError));
   }
 
   remove(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.eventUrl}/${id}`).pipe(catchError(handleError));
+    return this.http.delete<void>(`${this.url}/${id}`).pipe(catchError(handleError));
   }
 }

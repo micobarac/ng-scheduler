@@ -1,0 +1,102 @@
+<div class="modal-header">
+
+  <!-- Title -->
+  <h4 class="modal-title">New Event</h4>
+
+  <!-- X icon -->
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">X
+  </button>
+</div>
+
+<!-- Form body
+[formGroup] -- identify class member in FormModalComponent
+(ngSubmit)  -- identify class method called when user submit form
+-->
+<form [formGroup]="form" class="needs-validation" novalidate>
+
+  <div class="modal-body">
+    <div class="container">
+
+      <!-- Field -->
+      <div class="form-group required">
+        <label for="eventType">Event Type</label>
+        <select class="form-control" formControlName="type" [compareWith]="compareByKey" required>
+          <option [ngValue]="null">Select event type</option>
+          <option *ngFor="let type of types" [ngValue]="type">{{ type.label }}</option>
+        </select>
+      </div>
+
+      <!-- Field -->
+      <div class="form-group required">
+        <label for="user">User</label>
+        <select class="form-control" formControlName="user" [compareWith]="compareById" required>
+          <option [ngValue]="null">Select user</option>
+          <option *ngFor="let user of users" [ngValue]="user">{{ user.name }}</option>
+        </select>
+      </div>
+
+      <!-- Field -->
+      <div class="form-group required">
+        <label for="startTime">Start</label>
+        <div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" formControlName="startDate" ngbDatepicker #df="ngbDatepicker"
+                required>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="df.toggle()" type="button"></button>
+              </div>
+            </div>
+            <div class="d-flex">
+              <ngb-timepicker formControlName="startTime" [spinners]="false" required></ngb-timepicker>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Field -->
+      <div class="form-group required">
+        <label for="endTime">End</label>
+        <div>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="input-group">
+              <input class="form-control" placeholder="yyyy-mm-dd" formControlName="endDate" ngbDatepicker #dt="ngbDatepicker"
+                required>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="dt.toggle()" type="button"></button>
+              </div>
+            </div>
+            <div class="d-flex">
+              <ngb-timepicker formControlName="endTime" [spinners]="false" required></ngb-timepicker>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Field -->
+      <div class="form-group required">
+        <label for="text">Text</label>
+        <input type="text" class="form-control" formControlName="text" required />
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal-footer">
+    <div class="container d-flex align-items-center" [ngClass]="isNew ? 'justify-content-end' : 'justify-content-between'">
+      <button type="button" class="btn btn-danger" *ngIf="!isNew" (click)="delete()">
+        Delete
+      </button>
+
+      <div class="d-flex">
+        <button type="button" class="btn btn-info" [disabled]="!form.valid" (click)="submit()">
+          Submit
+        </button>
+
+        <button type="button" class="btn btn-light ml-2" (click)="cancel()">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</form>

@@ -7,6 +7,10 @@
   width: 100%;
 }
 
+.dhx_cal_cover {
+  display: none;
+}
+
 .event_work div,
 .dhx_cal_editor.event_work,
 .dhx_cal_event_line.event_work {
@@ -103,4 +107,10 @@
 
 .dhx_cal_event div.dhx_event_resize.dhx_footer {
   background-color: transparent !important;
+}
+
+form {
+  z-index: 15;
+  background-color: white;
+  padding: 30px;
 }
