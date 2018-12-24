@@ -54,36 +54,25 @@ export class FormModalComponent implements OnInit {
   }
 
   private createForm() {
-    this.form = this.formBuilder.group({
-      type: [null, [Validators.required, keyValidator]],
-      user: [null, [Validators.required, idValidator]],
-      startDate: [this.now, [Validators.required, dateTimeValidator]],
-      endDate: [this.now, [Validators.required, dateTimeValidator]],
-      text: ['', Validators.required]
-    });
+    this.form = this.formBuilder.group(
+      {
+        type: [null, [Validators.required, keyValidator]],
+        user: [null, [Validators.required, idValidator]],
+        start_date: [this.now, [Validators.required, dateTimeValidator]],
+        end_date: [this.now, [Validators.required, dateTimeValidator]],
+        text: ['', Validators.required]
+      },
+      { updateOn: 'change' }
+    );
 
     if (!this.isNew) {
-      this.form.patchValue({
-        id: this.event.id,
-        type: this.event.type,
-        user: this.event.user,
-        startDate: this.event.start_date,
-        endDate: this.event.end_date,
-        text: this.event.text
-      });
+      this.form.patchValue({ ...this.event });
     }
   }
 
   submit() {
-    const data = this.form.value;
-    const event = new Event();
-    event.id = data.id;
-    event.type = data.type;
-    event.user = data.user;
-    event.start_date = data.startDate;
-    event.end_date = data.endDate;
-    event.text = data.text;
-    this.saved.emit(event);
+    const event = this.form.value as Event;
+    this.saved.emit({ ...event });
     this.activeModal.close();
   }
 

@@ -1,12 +1,8 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
-import { addDays, addHours, format } from 'date-fns';
+import { addDays, addHours } from 'date-fns';
+import { Event } from '../models/event';
 import { Type } from '../models/type';
 import { User } from '../models/user';
-import { Event } from '../models/event';
-
-export function formatDate(date: Date): string {
-  return format(date, 'yyyy-MM-dd H:mm');
-}
 
 export class InMemoryDataService implements InMemoryDbService {
   createDb() {

@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, forwardRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgbDatepicker, NgbPopover, NgbPopoverConfig, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepicker, NgbPopover, NgbPopoverConfig, NgbTimeStruct, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { noop } from 'rxjs';
 import { DateTimeModel } from './datetime.model';
 
@@ -104,9 +104,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, Af
     }
   }
 
-  onDateChange($event: any) {
-    const date = DateTimeModel.fromLocal($event);
-
+  onDateChange(date: NgbDateStruct) {
     if (!date) {
       return;
     }

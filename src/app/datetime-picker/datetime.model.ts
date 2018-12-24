@@ -1,5 +1,4 @@
-import { NgbTimeStruct, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { DatePipe } from '@angular/common';
+import { NgbDateStruct, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 
 export interface NgbDateTimeStruct extends NgbDateStruct, NgbTimeStruct {}
 
@@ -10,15 +9,14 @@ export class DateTimeModel implements NgbDateTimeStruct {
   hour: number;
   minute: number;
   second: number;
-
   timeZoneOffset: number;
 
   public constructor(init?: Partial<DateTimeModel>) {
     Object.assign(this, init);
   }
 
-  public static fromLocal(value: NgbDateStruct | Date): DateTimeModel {
-    const date = value instanceof Date ? (value as Date) : new Date(value.year, value.month - 1, value.day);
+  public static fromLocal(value: Date | string): DateTimeModel {
+    const date = value instanceof Date ? (value as Date) : new Date(value);
     const isValidDate = !isNaN(date.valueOf());
 
     if (!date || !isValidDate) {
@@ -42,18 +40,10 @@ export class DateTimeModel implements NgbDateTimeStruct {
 
   public toDate(): Date {
     if (this.isInteger(this.year) && this.isInteger(this.month) && this.isInteger(this.day)) {
-      if (!this.hour) {
-        this.hour = 0;
-      }
-      if (!this.minute) {
-        this.minute = 0;
-      }
-      if (!this.second) {
-        this.second = 0;
-      }
-      if (!this.timeZoneOffset) {
-        this.timeZoneOffset = new Date().getTimezoneOffset();
-      }
+      this.hour = this.hour || 0;
+      this.minute = this.minute || 0;
+      this.second = this.second || 0;
+      this.timeZoneOffset = this.timeZoneOffset || new Date().getTimezoneOffset();
 
       const date = new Date(
         Date.UTC(this.year, this.month - 1, this.day, this.hour, this.minute, this.second) + this.timeZoneOffset * 6e4

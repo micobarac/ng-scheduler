@@ -73,9 +73,8 @@ export class SchedulerComponent implements OnInit, OnDestroy {
   }
 
   private format(events: Event[]) {
-    events.forEach((event: Event) => {
-      event.start_date = new Date(event.start_date);
-      event.end_date = new Date(event.end_date);
+    events.map((event: Event) => {
+      return Object.assign(event, { start_date: new Date(event.start_date), end_date: new Date(event.end_date) });
     });
     return events;
   }
@@ -100,7 +99,6 @@ export class SchedulerComponent implements OnInit, OnDestroy {
 
   addEvent() {
     scheduler.addEventNow();
-    // this.openModal();
   }
 
   ngOnDestroy(): void {
@@ -125,15 +123,8 @@ export class SchedulerComponent implements OnInit, OnDestroy {
   }
 
   save(savedEvent: Event) {
-    const event = scheduler.getEvent(scheduler.getState().lightbox_id);
-    event.type = savedEvent.type;
-    event.user = savedEvent.user;
-    event.start_date = savedEvent.start_date;
-    event.end_date = savedEvent.end_date;
-    event.text = savedEvent.text;
-
-    console.log(event);
-
+    let event = scheduler.getEvent(scheduler.getState().lightbox_id);
+    event = Object.assign(event, savedEvent, { id: event.id });
     scheduler.endLightbox(true, null);
   }
 
