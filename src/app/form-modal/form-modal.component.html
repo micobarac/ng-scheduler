@@ -38,7 +38,10 @@
         <div>
           <div class="d-flex justify-content-between align-items-center">
             <div class="input-group">
-              <app-date-time-picker formControlName="startDate" name="startDate"></app-date-time-picker>
+              <app-datetime-picker formControlName="startDate" name="startDate"></app-datetime-picker>
+              <div class="text-danger" *ngIf="form.get('startDate').errors?.required">Start Date is required.</div>
+              <div class="text-danger" *ngIf="form.get('startDate')?.value && form.get('startDate')?.errors?.invalidDateTime">Start
+                Date must be a valid date.</div>
             </div>
           </div>
         </div>
@@ -50,7 +53,10 @@
         <div>
           <div class="d-flex justify-content-between align-items-center">
             <div class="input-group">
-              <app-date-time-picker formControlName="endDate" name="endDate"></app-date-time-picker>
+              <app-datetime-picker formControlName="endDate" name="endDate"></app-datetime-picker>
+              <div class="text-danger" *ngIf="form.get('endDate').errors?.required">End Date is required.</div>
+              <div class="text-danger" *ngIf="form.get('endDate')?.value && form.get('endDate')?.errors?.invalidDateTime">End
+                Date must be a valid date.</div>
             </div>
           </div>
         </div>

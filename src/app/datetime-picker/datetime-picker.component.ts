@@ -1,14 +1,14 @@
 import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, forwardRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgbDatepicker, NgbDateStruct, NgbPopover, NgbPopoverConfig, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDatepicker, NgbPopover, NgbPopoverConfig, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import { noop } from 'rxjs';
-import { DateTimeModel } from './date-time.model';
+import { DateTimeModel } from './datetime.model';
 
 @Component({
-  selector: 'app-date-time-picker',
-  templateUrl: './date-time-picker.component.html',
-  styleUrls: ['./date-time-picker.component.scss'],
+  selector: 'app-datetime-picker',
+  templateUrl: './datetime-picker.component.html',
+  styleUrls: ['./datetime-picker.component.scss'],
   providers: [
     DatePipe,
     {
@@ -23,7 +23,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, Af
   date: Date;
 
   @Input()
-  format = 'yyyy-M-d H:mm';
+  format = 'yyyy-MM-dd HH:mm';
 
   @Input()
   hourStep = 1;
@@ -34,7 +34,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, Af
   @Input()
   disabled = false;
 
-  private showTimePickerToggle = false;
+  private showTimePicker = false;
 
   private datetime: DateTimeModel = new DateTimeModel();
   private firstTimeAssign = true;
@@ -50,18 +50,18 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, Af
 
   private ngControl: NgControl;
 
-  constructor(private config: NgbPopoverConfig, private inj: Injector) {
-    config.autoClose = 'outside';
-    config.placement = 'auto';
+  constructor(private config: NgbPopoverConfig, private injector: Injector) {
+    this.config.autoClose = 'outside';
+    this.config.placement = 'auto';
   }
 
   ngOnInit(): void {
-    this.ngControl = this.inj.get(NgControl);
+    this.ngControl = this.injector.get(NgControl);
   }
 
   ngAfterViewInit(): void {
-    this.popover.hidden.subscribe($event => {
-      this.showTimePickerToggle = false;
+    this.popover.hidden.subscribe(() => {
+      this.showTimePicker = false;
     });
   }
 
@@ -83,13 +83,9 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, Af
     this.onTouched = fn;
   }
 
-  toggleDateTimeState($event) {
-    this.showTimePickerToggle = !this.showTimePickerToggle;
+  toggleDateTimeState($event: Event) {
+    this.showTimePicker = !this.showTimePicker;
     $event.stopPropagation();
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
   }
 
   onInputChange($event: any) {
@@ -112,12 +108,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, Af
     const date = DateTimeModel.fromLocal($event);
 
     if (!date) {
-      this.date = this.date;
       return;
-    }
-
-    if (!this.datetime) {
-      this.datetime = date;
     }
 
     this.datetime.year = date.year;
@@ -128,10 +119,15 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, Af
     this.setDate();
   }
 
-  onTimeChange(event: NgbTimeStruct) {
-    this.datetime.hour = event.hour;
-    this.datetime.minute = event.minute;
-    this.datetime.second = event.second;
+  onTimeChange(time: NgbTimeStruct) {
+    if (!time) {
+      return null;
+    }
+
+    this.datetime.hour = time.hour;
+    this.datetime.minute = time.minute;
+    this.datetime.second = time.second;
+
     this.setDate();
   }
 
@@ -148,7 +144,7 @@ export class DateTimePickerComponent implements ControlValueAccessor, OnInit, Af
     }
   }
 
-  inputBlur($event) {
+  inputBlur() {
     this.onTouched();
   }
 }

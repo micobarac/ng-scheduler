@@ -1,3 +1,5 @@
+@import '~bootstrap/scss/bootstrap';
+
 button.calendar,
 button.calendar:active {
   width: 2.75rem;
@@ -19,4 +21,18 @@ button.calendar:active {
   content: '*';
   color: red;
   margin-left: 0.15rem;
+}
+
+.ng-invalid {
+  .form-control.ng-invalid ~ .invalid-feedback {
+    display: block;
+  }
+
+  .form-group {
+    > .form-control {
+      &.ng-invalid {
+        border-color: $danger;
+      }
+    }
+  }
 }

@@ -9,7 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DateTimePickerComponent } from './date-time-picker/date-time-picker.component';
+import { DateTimePickerComponent } from './datetime-picker/datetime-picker.component';
 import { FormModalComponent } from './form-modal/form-modal.component';
 import { SchedulerComponent } from './scheduler/scheduler.component';
 import { InMemoryDataService } from './services/in-memory-data.service';
