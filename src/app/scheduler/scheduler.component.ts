@@ -4,6 +4,7 @@ import * as Case from 'case';
 import 'dhtmlx-scheduler';
 import 'dhtmlx-scheduler/codebase/ext/dhtmlxscheduler_limit.js';
 import 'dhtmlx-scheduler/codebase/ext/dhtmlxscheduler_year_view.js';
+import { map } from 'rxjs/operators';
 import { FormModalComponent } from '../form-modal/form-modal.component';
 import { Event } from '../models/event';
 import { Type } from '../models/type';
@@ -36,9 +37,12 @@ export class SchedulerComponent implements OnInit, OnDestroy {
       this.types = types;
     });
 
-    this.eventService.get().subscribe((data: Event[]) => {
-      scheduler.parse(data, 'json');
-    });
+    this.eventService
+      .get()
+      .pipe(map((events: Event[]) => this.format(events)))
+      .subscribe((data: Event[]) => {
+        scheduler.parse(data, 'json');
+      });
 
     scheduler.templates.event_class = (_start: any, _end: any, event: Event) => {
       return event.type ? 'event_' + this.getLabel(event.type) : '';
@@ -66,6 +70,14 @@ export class SchedulerComponent implements OnInit, OnDestroy {
       const event = scheduler.getEvent(id);
       scheduler.startLightbox(id, this.openModal(event));
     };
+  }
+
+  private format(events: Event[]) {
+    events.forEach((event: Event) => {
+      event.start_date = new Date(event.start_date);
+      event.end_date = new Date(event.end_date);
+    });
+    return events;
   }
 
   private serializeEvent(event: Event, insert: boolean = false): Event {

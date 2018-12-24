@@ -6,7 +6,7 @@ import { Type } from '../models/type';
 import { User } from '../models/user';
 import { TypeService } from '../services/type';
 import { UserService } from '../services/user.service';
-import { idValidator, keyValidator } from '../validators/validators';
+import { dateTimeValidator, idValidator, keyValidator } from '../validators/validators';
 
 @Component({
   selector: 'app-form-modal',
@@ -57,10 +57,8 @@ export class FormModalComponent implements OnInit {
     this.form = this.formBuilder.group({
       type: [null, [Validators.required, keyValidator]],
       user: [null, [Validators.required, idValidator]],
-      startDate: [this.now, Validators.required],
-      startTime: [this.now, Validators.required],
-      endDate: [this.now, Validators.required],
-      endTime: [this.now, Validators.required],
+      startDate: [this.now, [Validators.required, dateTimeValidator]],
+      endDate: [this.now, [Validators.required, dateTimeValidator]],
       text: ['', Validators.required]
     });
 
@@ -70,9 +68,7 @@ export class FormModalComponent implements OnInit {
         type: this.event.type,
         user: this.event.user,
         startDate: this.event.start_date,
-        startTime: this.event.start_date,
         endDate: this.event.end_date,
-        endTime: this.event.end_date,
         text: this.event.text
       });
     }

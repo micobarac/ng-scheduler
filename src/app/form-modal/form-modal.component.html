@@ -8,10 +8,7 @@
   </button>
 </div>
 
-<!-- Form body
-[formGroup] -- identify class member in FormModalComponent
-(ngSubmit)  -- identify class method called when user submit form
--->
+<!-- Form body -->
 <form [formGroup]="form" class="needs-validation" novalidate>
 
   <div class="modal-body">
@@ -37,18 +34,11 @@
 
       <!-- Field -->
       <div class="form-group required">
-        <label for="startTime">Start</label>
+        <label for="startDate">Start</label>
         <div>
           <div class="d-flex justify-content-between align-items-center">
             <div class="input-group">
-              <input class="form-control" placeholder="yyyy-mm-dd" formControlName="startDate" ngbDatepicker #df="ngbDatepicker"
-                required>
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="df.toggle()" type="button"></button>
-              </div>
-            </div>
-            <div class="d-flex">
-              <ngb-timepicker formControlName="startTime" [spinners]="false" required></ngb-timepicker>
+              <app-date-time-picker formControlName="startDate" name="startDate"></app-date-time-picker>
             </div>
           </div>
         </div>
@@ -56,18 +46,11 @@
 
       <!-- Field -->
       <div class="form-group required">
-        <label for="endTime">End</label>
+        <label for="endDate">End</label>
         <div>
           <div class="d-flex justify-content-between align-items-center">
             <div class="input-group">
-              <input class="form-control" placeholder="yyyy-mm-dd" formControlName="endDate" ngbDatepicker #dt="ngbDatepicker"
-                required>
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="dt.toggle()" type="button"></button>
-              </div>
-            </div>
-            <div class="d-flex">
-              <ngb-timepicker formControlName="endTime" [spinners]="false" required></ngb-timepicker>
+              <app-date-time-picker formControlName="endDate" name="endDate"></app-date-time-picker>
             </div>
           </div>
         </div>

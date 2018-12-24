@@ -257,32 +257,32 @@ export class InMemoryDataService implements InMemoryDbService {
         id: 1,
         type: types.find(type => type.key === 1),
         user: users.find(user => user.id === 1),
-        start_date: `${formatDate(date)}`,
-        end_date: `${formatDate(addDays(addHours(date, 2), 1))}`,
+        start_date: date,
+        end_date: addDays(addHours(date, 2), 1),
         text: 'Event 1'
       },
       {
         id: 2,
         type: types.find(type => type.key === 2),
         user: users.find(user => user.id === 2),
-        start_date: `${formatDate(addDays(date, 3))}`,
-        end_date: `${formatDate(addDays(addHours(date, 2), 4))}`,
+        start_date: addDays(date, 3),
+        end_date: addDays(addHours(date, 2), 4),
         text: 'Event 2'
       },
       {
         id: 3,
         type: types.find(type => type.key === 3),
         user: users.find(user => user.id === 3),
-        start_date: `${formatDate(addDays(date, 2))}`,
-        end_date: `${formatDate(addDays(addHours(date, 2), 2))}`,
+        start_date: addDays(date, 2),
+        end_date: addDays(addHours(date, 2), 2),
         text: 'Event 3'
       },
       {
         id: 4,
         type: types.find(type => type.key === 4),
         user: users.find(user => user.id === 4),
-        start_date: `${formatDate(addDays(date, 3))}`,
-        end_date: `${formatDate(addDays(addHours(date, 2), 3))}`,
+        start_date: addDays(date, 3),
+        end_date: addDays(addHours(date, 2), 3),
         text: 'Event 4'
       }
     ];

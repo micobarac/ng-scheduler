@@ -9,3 +9,10 @@ export function keyValidator(control: AbstractControl): { [key: string]: any } |
   const valid = control.value && control.value.key;
   return valid ? null : { invalidKey: { valid: false, value: control.value } };
 }
+
+export function dateTimeValidator(control: AbstractControl): { [key: string]: any } | null {
+  const date = new Date(control.value);
+  const isValid = !isNaN(date.valueOf());
+
+  return isValid ? null : { invalidDateTime: { valid: false, value: control.value } };
+}
