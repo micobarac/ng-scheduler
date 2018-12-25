@@ -4,7 +4,7 @@
   <h4 class="modal-title">New Event</h4>
 
   <!-- X icon -->
-  <button type="button" class="close" aria-label="Close" (click)="cancel()">X
+  <button type="button" class="close" aria-label="Close" (click)="close()">X
   </button>
 </div>
 
@@ -78,7 +78,7 @@
       </button>
 
       <div class="d-flex">
-        <button type="button" class="btn btn-info" [disabled]="!form.valid" (click)="submit()">
+        <button type="button" class="btn btn-info" [disabled]="!form.valid" (click)="save()">
           Submit
         </button>
 

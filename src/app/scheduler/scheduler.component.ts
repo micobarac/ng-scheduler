@@ -1,11 +1,13 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as Case from 'case';
 import 'dhtmlx-scheduler';
 import 'dhtmlx-scheduler/codebase/ext/dhtmlxscheduler_limit.js';
 import 'dhtmlx-scheduler/codebase/ext/dhtmlxscheduler_year_view.js';
 import { map } from 'rxjs/operators';
+import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { FormModalComponent } from '../form-modal/form-modal.component';
+import { ModalResult } from '../models/enums';
 import { Event } from '../models/event';
 import { Type } from '../models/type';
 import { EventService } from '../services/event.service';
@@ -62,7 +64,7 @@ export class SchedulerComponent implements OnInit, OnDestroy {
       });
     });
 
-    scheduler.attachEvent('onEventChanged', (_: number, event: Event) => {
+    scheduler.attachEvent('onEventChanged', (id: number, event: Event) => {
       this.eventService.update(this.serializeEvent(event));
     });
 
@@ -70,9 +72,14 @@ export class SchedulerComponent implements OnInit, OnDestroy {
       this.eventService.remove(id);
     });
 
+    scheduler._click.buttons.delete = (id: number) => {
+      const event = scheduler.getEvent(id);
+      this.openConfirm(event);
+    };
+
     scheduler.showLightbox = (id: any) => {
       const event = scheduler.getEvent(id);
-      scheduler.startLightbox(id, this.openModal(event));
+      scheduler.startLightbox(id, this.openForm(event));
     };
   }
 
@@ -109,31 +116,45 @@ export class SchedulerComponent implements OnInit, OnDestroy {
     scheduler.clearAll();
   }
 
-  openModal(event: Event) {
+  openForm(event: Event) {
     const modalRef = this.modalService.open(FormModalComponent, { centered: true });
     modalRef.componentInstance.isNew = scheduler.getState().new_event;
     modalRef.componentInstance.event = event;
-    modalRef.componentInstance.saved.subscribe((savedEvent: Event) => this.save(savedEvent));
-    modalRef.componentInstance.deleted.subscribe(() => this.delete());
+    modalRef.componentInstance.saved.subscribe((changedEvent: Event) => this.save(changedEvent));
+    modalRef.componentInstance.deleted.subscribe(() => this.delete(event));
 
     modalRef.result
       .then()
-      .catch(reason => {
-        if (reason !== ModalDismissReasons.ESC && reason !== ModalDismissReasons.BACKDROP_CLICK) {
-          console.log(reason);
+      .catch((reason: ModalResult | any) => {
+        if (this.isError(reason)) {
+          console.error(reason);
         }
       })
       .finally(() => scheduler.endLightbox(false, null));
   }
 
-  save(savedEvent: Event) {
+  openConfirm(event: Event) {
+    const modalRef = this.modalService.open(ConfirmModalComponent, { centered: true });
+    modalRef.componentInstance.deleted.subscribe(() => this.delete(event));
+
+    modalRef.result.then().catch((reason: ModalResult | any) => {
+      if (this.isError(reason)) {
+        console.error(reason);
+      }
+    });
+  }
+
+  isError(reason: ModalResult | any): boolean {
+    return ![ModalResult.ESC, ModalResult.BACKDROP_CLICK, ModalResult.CLOSE, ModalResult.CANCEL].includes(reason);
+  }
+
+  save(changedEvent: Event) {
     let event = scheduler.getEvent(scheduler.getState().lightbox_id);
-    event = Object.assign(event, savedEvent, { id: event.id });
+    event = Object.assign(event, changedEvent, { id: event.id });
     scheduler.endLightbox(true, null);
   }
 
-  delete() {
-    const id = scheduler.getState().lightbox_id;
-    scheduler.deleteEvent(id);
+  delete(event: Event) {
+    scheduler.deleteEvent(event.id);
   }
 }

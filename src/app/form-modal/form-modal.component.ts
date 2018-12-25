@@ -7,6 +7,7 @@ import { User } from '../models/user';
 import { TypeService } from '../services/type';
 import { UserService } from '../services/user.service';
 import { dateTimeValidator, idValidator, keyValidator } from '../validators/validators';
+import { ModalResult } from '../models/enums';
 
 @Component({
   selector: 'app-form-modal',
@@ -25,7 +26,7 @@ export class FormModalComponent implements OnInit {
   users: User[] = [];
 
   constructor(
-    public activeModal: NgbActiveModal,
+    public modal: NgbActiveModal,
     private formBuilder: FormBuilder,
     private typeService: TypeService,
     private userService: UserService
@@ -68,18 +69,22 @@ export class FormModalComponent implements OnInit {
     this.form.patchValue({ ...this.event });
   }
 
-  submit() {
+  save() {
     const event = this.form.value as Event;
     this.saved.emit({ ...event });
-    this.activeModal.close();
+    this.modal.close(ModalResult.SAVE);
+  }
+
+  close() {
+    this.modal.dismiss(ModalResult.CLOSE);
   }
 
   cancel() {
-    this.activeModal.close();
+    this.modal.dismiss(ModalResult.CANCEL);
   }
 
   delete() {
     this.deleted.emit();
-    this.activeModal.close();
+    this.modal.close(ModalResult.DELETE);
   }
 }

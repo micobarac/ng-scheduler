@@ -9,6 +9,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { DateTimePickerComponent } from './datetime-picker/datetime-picker.component';
 import { FormModalComponent } from './form-modal/form-modal.component';
 import { SchedulerComponent } from './scheduler/scheduler.component';
@@ -17,7 +18,7 @@ import { InMemoryDataService } from './services/in-memory-data.service';
 fontLibrary.add(faCalendar, faClock);
 
 @NgModule({
-  declarations: [AppComponent, SchedulerComponent, FormModalComponent, DateTimePickerComponent],
+  declarations: [AppComponent, SchedulerComponent, FormModalComponent, DateTimePickerComponent, ConfirmModalComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -30,6 +31,6 @@ fontLibrary.add(faCalendar, faClock);
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [FormModalComponent]
+  entryComponents: [FormModalComponent, ConfirmModalComponent]
 })
 export class AppModule {}
