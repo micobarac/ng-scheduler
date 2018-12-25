@@ -11,40 +11,40 @@
   display: none;
 }
 
+.dhx_cal_event_clear {
+  color: white;
+}
+
 .event_work div,
 .dhx_cal_editor.event_work,
-.dhx_cal_event_line.event_work {
-  background-color: #ff9633 !important;
-}
+.dhx_cal_event_line.event_work,
 .dhx_cal_event_clear.event_work {
-  color: #ff9633 !important;
+  background-color: #ff9633 !important;
 }
 
 .event_meeting div,
 .dhx_cal_editor.event_meeting,
-.dhx_cal_event_line.event_meeting {
-  background-color: #9575cd !important;
-}
+.dhx_cal_event_line.event_meeting,
 .dhx_cal_event_clear.event_meeting {
-  color: #9575cd !important;
+  background-color: #9575cd !important;
 }
 
 .event_movies div,
 .dhx_cal_editor.event_movies,
-.dhx_cal_event_line.event_movies {
-  background-color: #ff5722 !important;
-}
+.dhx_cal_event_line.event_movies,
 .dhx_cal_event_clear.event_movies {
-  color: #ff5722 !important;
+  background-color: #ff5722 !important;
 }
 
 .event_rest div,
 .dhx_cal_editor.event_rest,
-.dhx_cal_event_line.event_rest {
+.dhx_cal_event_line.event_rest,
+.dhx_cal_event_clear.event_rest {
   background-color: #0fc4a7 !important;
 }
-.dhx_cal_event_clear.event_rest {
-  color: #0fc4a7 !important;
+
+.dhx_scheduler_month .dhx_marked_timespan {
+  display: block;
 }
 
 .add_event_button {

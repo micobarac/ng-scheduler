@@ -30,6 +30,10 @@ export class SchedulerComponent implements OnInit, OnDestroy {
   ngOnInit() {
     scheduler.skin = 'material';
     scheduler.config.xml_date = '%Y-%m-%d %H:%i';
+    scheduler.config.limit_time_select = true;
+    scheduler.config.details_on_create = true;
+    scheduler.config.details_on_dblclick = true;
+    scheduler.config.icons_select = ['icon_details', 'icon_delete'];
     scheduler.config.first_hour = 7;
     scheduler.config.now_date = new Date();
 
