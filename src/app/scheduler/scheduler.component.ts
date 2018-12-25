@@ -77,8 +77,7 @@ export class SchedulerComponent implements OnInit, OnDestroy {
     });
 
     scheduler._click.buttons.delete = (id: number) => {
-      const event = scheduler.getEvent(id);
-      this.openConfirm(event);
+      this.openConfirm(id);
     };
 
     scheduler.showLightbox = (id: any) => {
@@ -127,7 +126,7 @@ export class SchedulerComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.isNew = scheduler.getState().new_event;
     modalRef.componentInstance.event = event;
     modalRef.componentInstance.saved.subscribe((changedEvent: Event) => this.save(changedEvent));
-    modalRef.componentInstance.deleted.subscribe(() => this.delete(event.id));
+    modalRef.componentInstance.deleted.subscribe(() => this.openConfirm(event.id));
 
     modalRef.result
       .then()
@@ -139,9 +138,9 @@ export class SchedulerComponent implements OnInit, OnDestroy {
       .finally(() => scheduler.endLightbox(false, null));
   }
 
-  openConfirm(event: Event) {
+  openConfirm(id: number) {
     const modalRef = this.modalService.open(ConfirmModalComponent, { centered: true });
-    modalRef.componentInstance.deleted.subscribe(() => this.delete(event.id));
+    modalRef.componentInstance.deleted.subscribe(() => this.delete(id));
 
     modalRef.result.then().catch((reason: ModalResult | any) => {
       if (this.isError(reason)) {
