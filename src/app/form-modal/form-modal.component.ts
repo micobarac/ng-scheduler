@@ -65,9 +65,7 @@ export class FormModalComponent implements OnInit {
       { updateOn: 'change' }
     );
 
-    if (!this.isNew) {
-      this.form.patchValue({ ...this.event });
-    }
+    this.form.patchValue({ ...this.event });
   }
 
   submit() {
