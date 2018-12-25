@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import * as Case from 'case';
 import 'dhtmlx-scheduler';
 import 'dhtmlx-scheduler/codebase/ext/dhtmlxscheduler_limit.js';
@@ -113,11 +113,11 @@ export class SchedulerComponent implements OnInit, OnDestroy {
     modalRef.componentInstance.deleted.subscribe(() => this.delete());
 
     modalRef.result
-      .then(result => {
-        // console.log(result);
-      })
-      .catch(error => {
-        console.log(error);
+      .then()
+      .catch(reason => {
+        if (reason !== ModalDismissReasons.ESC && reason !== ModalDismissReasons.BACKDROP_CLICK) {
+          console.log(reason);
+        }
       })
       .finally(() => scheduler.endLightbox(false, null));
   }
