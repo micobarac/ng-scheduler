@@ -54,8 +54,6 @@ export class SchedulerComponent implements OnInit, OnDestroy {
       return event.type ? 'event_' + this.getLabel(event.type) : '';
     };
 
-    scheduler.init(this.schedulerRef.nativeElement, new Date(), 'month');
-
     scheduler.attachEvent('onEventAdded', (id: number, event: Event) => {
       this.eventService.insert(this.serializeEvent(event, true)).subscribe(data => {
         if (data.id !== id) {
@@ -72,6 +70,12 @@ export class SchedulerComponent implements OnInit, OnDestroy {
       this.eventService.remove(id);
     });
 
+    scheduler.attachEvent('onTemplatesReady', () => {
+      scheduler.templates.event_text = (_start: any, _end: any, event: Event) => {
+        return '<b>' + event.text + '</b><br><i>' + event.type.label + '</i>';
+      };
+    });
+
     scheduler._click.buttons.delete = (id: number) => {
       const event = scheduler.getEvent(id);
       this.openConfirm(event);
@@ -81,6 +85,8 @@ export class SchedulerComponent implements OnInit, OnDestroy {
       const event = scheduler.getEvent(id);
       scheduler.startLightbox(id, this.openForm(event));
     };
+
+    scheduler.init(this.schedulerRef.nativeElement, new Date(), 'month');
   }
 
   private format(events: Event[]) {
